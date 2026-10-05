@@ -1,0 +1,39 @@
+# Antigravity Continuous Delivery Workflow Definition
+name: deploy-kesari-bagh
+version: 1.0.0
+trigger:
+  push:
+    branches:
+      - main
+      - release/*
+
+harness:
+  runner: antigravity-cloud-agent
+  mcps:
+    - name: google.cloud.run
+      version: latest
+    - name: google.gemini.assist
+      version: latest
+    - name: google.antigravity.design_center
+      version: latest
+
+steps:
+  - id: verify-codecraft
+    name: Verify Anti-Blobbing & Type Strictness
+    run: npm run build
+
+  - id: build-container
+    name: Build Multi-Stage Container
+    run: docker build -t gcr.io/${PROJECT_ID}/the-kesari-bagh-web:latest .
+
+  - id: deploy-cloud-run
+    name: Release to Google Cloud Run Asia-South1
+    uses: mcp://google.cloud.run/deploy
+    with:
+      service: the-kesari-bagh-web
+      region: asia-south1
+      concurrency: 80
+      minInstances: 1
+      maxInstances: 10
+      memory: 1Gi
+      healthCheckPath: /api/health
