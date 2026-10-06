@@ -703,6 +703,8 @@ async function executeAutonomousSwarmAudit() {
   assert.ok(schemaSql.includes('CREATE POLICY "Admin full access on bookings" ON public.bookings FOR ALL USING ('), 'Only admin sessions can read guest personal data');
   assert.ok(schemaSql.includes('expires_at TIMESTAMP WITH TIME ZONE'), '15-minute hold TTL expiration column must exist in schema');
   assert.ok(schemaSql.includes('guest_id_type TEXT'), 'Guest ID type column must exist in schema');
+  assert.ok(schemaSql.includes('purge_expired_booking_holds()'), 'PostgreSQL function for purging holds must exist');
+  assert.equal(typeof EstateService.purgeExpiredHolds, 'function', 'EstateService.purgeExpiredHolds method must exist');
 
   // TanStack Admin Folio: Verify pending tab filter
   const adminPagePath = path.join(process.cwd(), 'src', 'app', 'admin', 'reservations', 'page.tsx');

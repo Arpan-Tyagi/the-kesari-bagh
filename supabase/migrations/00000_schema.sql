@@ -310,3 +310,25 @@ Distinguished by the lyrical inward-curving lyre-shaped ears that define pure Ma
     true
 )
 ON CONFLICT (slug) DO NOTHING;
+
+-- =========================================================================
+-- AUTOMATED PURGE PROCEDURE FOR EXPIRED TRANSIENT HOLDS (15-MINUTE TTL)
+-- =========================================================================
+CREATE OR REPLACE FUNCTION public.purge_expired_booking_holds()
+RETURNS integer
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+    purged_count integer;
+BEGIN
+    UPDATE public.bookings
+    SET status = 'cancelled'
+    WHERE status = 'pending'
+      AND expires_at IS NOT NULL
+      AND expires_at < NOW();
+    
+    GET DIAGNOSTICS purged_count = ROW_COUNT;
+    RETURN purged_count;
+END;
+$$;

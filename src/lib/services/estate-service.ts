@@ -1,6 +1,6 @@
 // Estate Service Layer: State Management, Availability, and Folios
 import { AUTHENTIC_ROOMS, CURATED_ADDONS, INITIAL_COUPONS } from '@/lib/data/mock-estate-data';
-import { BookingEntity, BookingStatus, RoomEntity, CouponEntity, BookingAddonItem, EventInquiryEntity, InquiryStatus, EventType } from '@/types/database';
+import { BookingEntity, BookingStatus, RoomEntity, CouponEntity, BookingAddonItem, EventInquiryEntity, InquiryStatus } from '@/types/database';
 import { PricingBreakdown } from '@/types/booking';
 import { calculateEstatePricing, parseLocalDate } from './pricing-calculator';
 import { EstateInquiryService } from './estate-inquiries';
@@ -19,7 +19,7 @@ export class EstateService {
   static updateBookingStatus(id: string, status: BookingStatus): boolean { return updateBookingStatusInStore(id, status); }
 
   static getInquiries(): EventInquiryEntity[] { return EstateInquiryService.getInquiries(); }
-  static createEventInquiry(data: { name: string; email: string; phone: string; eventType: EventType; guestCount: number; preferredDate: string; message: string; }): EventInquiryEntity {
+  static createEventInquiry(data: Parameters<typeof EstateInquiryService.createEventInquiry>[0]): EventInquiryEntity {
     return EstateInquiryService.createEventInquiry(data);
   }
   static updateInquiryStatus(id: string, status: InquiryStatus): boolean { return EstateInquiryService.updateInquiryStatus(id, status); }
@@ -56,30 +56,33 @@ export class EstateService {
   }
 
   static addCoupon(coupon: Omit<CouponEntity, 'id' | 'used_count' | 'created_at'>): CouponEntity {
-    const newCoupon: CouponEntity = {
-      id: `coupon-${Date.now()}`,
-      used_count: 0,
-      created_at: new Date().toISOString(),
-      ...coupon,
-    };
+    const newCoupon: CouponEntity = { id: `coupon-${Date.now()}`, used_count: 0, created_at: new Date().toISOString(), ...coupon };
     dynamicCoupons.push(newCoupon);
     return newCoupon;
   }
 
+  static purgeExpiredHolds(): number {
+    const nowMs = Date.now();
+    let count = 0;
+    for (const b of memoryBookings) {
+      if (b.status === 'pending' && b.expires_at && nowMs > new Date(b.expires_at).getTime()) {
+        b.status = 'cancelled';
+        count++;
+      }
+    }
+    if (count > 0) notifyBookingListeners();
+    return count;
+  }
+
   static checkAvailability(roomId: string, checkIn: string, checkOut: string): boolean {
+    this.purgeExpiredHolds();
     try {
       const reqStart = parseLocalDate(checkIn).getTime();
       const reqEnd = parseLocalDate(checkOut).getTime();
       if (isNaN(reqStart) || isNaN(reqEnd) || reqEnd <= reqStart) return false;
 
-      const nowMs = Date.now();
       for (const b of memoryBookings) {
         if (b.status === 'cancelled') continue;
-        if (b.status === 'pending' && b.expires_at && nowMs > new Date(b.expires_at).getTime()) {
-          b.status = 'cancelled';
-          continue;
-        }
-
         const isCollision = b.room_id === roomId || roomId === 'whole-estate' || b.room_id === 'whole-estate';
         if (!isCollision) continue;
 
