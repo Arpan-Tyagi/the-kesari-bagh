@@ -65,6 +65,8 @@ export interface BookingEntity {
   tax_total: number;
   total_price: number;
   status: BookingStatus;
+  expires_at?: string;
+  id_type?: string;
   coupon_id?: string | null;
   special_requests?: string | null;
   whatsapp_notified: boolean;

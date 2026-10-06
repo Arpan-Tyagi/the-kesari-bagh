@@ -10,14 +10,11 @@ import { EmailDispatcher } from '@/lib/services/email-dispatcher';
 import { PricingBreakdown } from '@/types/booking';
 import { isSupabaseConfigured, createServerSupabaseClient } from '@/lib/supabase/server';
 
+
 export async function checkAvailabilityAction(input: unknown) {
   try {
     const parsed = dateAvailabilitySchema.parse(input);
-    const isAvailable = EstateService.checkAvailability(
-      parsed.roomId,
-      parsed.checkIn,
-      parsed.checkOut
-    );
+    const isAvailable = EstateService.checkAvailability(parsed.roomId, parsed.checkIn, parsed.checkOut);
     return { success: true, isAvailable };
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Availability verification failed';
@@ -34,16 +31,8 @@ export async function calculatePricingAction(
 ): Promise<{ success: boolean; pricing?: PricingBreakdown; error?: string }> {
   try {
     const room = EstateService.getRoomById(roomId);
-    if (!room) {
-      return { success: false, error: 'Suite not found' };
-    }
-    const pricing = EstateService.calculatePricing(
-      room,
-      checkIn,
-      checkOut,
-      addonIds,
-      couponCode
-    );
+    if (!room) return { success: false, error: 'Suite not found' };
+    const pricing = EstateService.calculatePricing(room, checkIn, checkOut, addonIds, couponCode);
     return { success: true, pricing };
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Pricing calculation failed';
@@ -55,13 +44,9 @@ export async function verifyCouponAction(code: string, subtotal: number) {
   try {
     const parsed = verifyCouponSchema.parse({ code, bookingSubtotal: subtotal });
     const coupons = EstateService.getCoupons();
-    const match = coupons.find(
-      (c) => c.code.toUpperCase() === parsed.code.toUpperCase() && c.is_active
-    );
+    const match = coupons.find((c) => c.code.toUpperCase() === parsed.code.toUpperCase() && c.is_active);
 
-    if (!match) {
-      return { success: false, valid: false, message: 'Invalid or inactive promotional code' };
-    }
+    if (!match) return { success: false, valid: false, message: 'Invalid or inactive promotional code' };
 
     const now = new Date().toISOString();
     if (match.valid_from && match.valid_from > now) {
@@ -73,7 +58,6 @@ export async function verifyCouponAction(code: string, subtotal: number) {
     if (match.usage_limit != null && match.used_count >= match.usage_limit) {
       return { success: false, valid: false, message: 'Promotional privilege usage quota has been reached' };
     }
-
     if (match.min_booking_amount && subtotal < match.min_booking_amount) {
       return {
         success: false,
@@ -85,49 +69,37 @@ export async function verifyCouponAction(code: string, subtotal: number) {
     let discountAmount = 0;
     if (match.discount_type === 'percentage') {
       discountAmount = Math.round((subtotal * match.discount_value) / 100);
-      if (match.max_discount_amount) {
-        discountAmount = Math.min(discountAmount, match.max_discount_amount);
-      }
+      if (match.max_discount_amount) discountAmount = Math.min(discountAmount, match.max_discount_amount);
     } else {
       discountAmount = Math.min(match.discount_value, subtotal);
     }
 
-    return {
-      success: true,
-      valid: true,
-      discountAmount,
-      coupon: match,
-      message: `Coupon ${match.code} applied successfully`,
-    };
+    return { success: true, valid: true, discountAmount, coupon: match, message: `Coupon ${match.code} applied successfully` };
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : 'Validation failed';
+    const msg = err instanceof Error ? err.message : 'Coupon verification failed';
     return { success: false, valid: false, message: msg };
   }
 }
 
-export async function submitBookingAction(input: unknown) {
+export async function createBookingAction(input: unknown) {
   try {
-    const parsed = bookingFormSchema.parse(input);
-    const creationResult = EstateService.createBooking(parsed);
+    const validatedData = bookingFormSchema.parse(input);
+    const room = EstateService.getRoomById(validatedData.roomId);
+    if (!room) return { success: false, error: 'Selected room not found' };
 
-    if (!creationResult.success || !creationResult.booking) {
-      return {
-        success: false,
-        message: creationResult.message,
-      };
+    const isAvailable = EstateService.checkAvailability(validatedData.roomId, validatedData.checkIn, validatedData.checkOut);
+    if (!isAvailable) {
+      return { success: false, error: 'This room is no longer available for the selected dates' };
     }
 
-    const { booking, pricing } = creationResult;
-    const room = EstateService.getRoomById(booking.room_id);
-    const roomName = room ? room.name : 'Exclusive Estate Suite';
+    const bookingRes = EstateService.createBooking(validatedData);
+    const booking = bookingRes.booking;
 
-    // Asynchronously dispatch omnichannel notifications
     Promise.allSettled([
-      WhatsAppDispatcher.sendBookingConfirmation(booking, roomName),
-      EmailDispatcher.sendBookingConfirmation(booking, roomName),
-    ]).catch((err) => console.error('Dispatch error:', err));
+      WhatsAppDispatcher.sendBookingConfirmation(booking, room.name),
+      EmailDispatcher.sendBookingConfirmation(booking, room.name),
+    ]).catch((err) => console.error('Notification dispatch warning:', err));
 
-    // Sync to Supabase if configured in environment
     if (isSupabaseConfigured()) {
       createServerSupabaseClient()
         .then((supabase) =>
@@ -153,17 +125,10 @@ export async function submitBookingAction(input: unknown) {
         .catch((err) => console.warn('[Supabase Sync Warn]:', err));
     }
 
-    return {
-      success: true,
-      referenceCode: booking.reference_code,
-      bookingId: booking.id,
-      pricing,
-      room,
-      message: 'Your stay at The Kesari Bagh has been successfully confirmed.',
-    };
+    return { success: true, booking, referenceCode: booking.reference_code, message: 'Reservation confirmed successfully' };
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : 'Failed to process reservation';
-    return { success: false, message: msg };
+    const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred during reservation';
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -171,7 +136,6 @@ export async function submitEventInquiryAction(input: unknown) {
   try {
     const parsed = eventInquirySchema.parse(input);
     const inquiry = EstateService.createEventInquiry(parsed);
-    console.log('[Estate Event Inquiry Received & Logged]:', inquiry.id);
 
     if (isSupabaseConfigured()) {
       createServerSupabaseClient()

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
+import { Cormorant_Garamond, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
 import { ConciergeChat } from '@/components/chat/ConciergeChat';
@@ -11,7 +11,7 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
+const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
@@ -54,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${plusJakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#FBF9F5] text-[#2B2D2B]">
         <SmoothScrollProvider>

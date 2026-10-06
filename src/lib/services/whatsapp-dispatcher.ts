@@ -9,10 +9,80 @@ export interface WhatsAppDispatchResult {
   error?: string;
 }
 
+export interface DispatchedWhatsAppMessage {
+  recipient: string;
+  body: string;
+  timestamp: string;
+  messageId: string;
+}
+
 export class WhatsAppDispatcher {
   private static apiVersion = 'v19.0';
   private static phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID || 'demo_phone_id';
   private static accessToken = process.env.WHATSAPP_ACCESS_TOKEN || 'demo_token';
+  private static dispatchHistory: DispatchedWhatsAppMessage[] = [];
+
+  static getDispatchedHistory(): DispatchedWhatsAppMessage[] {
+    return this.dispatchHistory;
+  }
+
+  static clearHistory(): void {
+    this.dispatchHistory = [];
+  }
+
+  static async sendTextMessage(
+    toPhone: string,
+    messageText: string
+  ): Promise<WhatsAppDispatchResult> {
+    const recipientPhone = toPhone.replace(/[^0-9]/g, '');
+    const messageId = `mock_wam_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+
+    this.dispatchHistory.push({
+      recipient: recipientPhone,
+      body: messageText,
+      timestamp: new Date().toISOString(),
+      messageId,
+    });
+
+    if (!process.env.WHATSAPP_ACCESS_TOKEN || process.env.WHATSAPP_ACCESS_TOKEN === 'demo_token') {
+      console.log(`[WhatsApp Mock Dispatcher] Message dispatched to ${recipientPhone}:\n${messageText}`);
+      return { success: true, messageId };
+    }
+
+    try {
+      const url = `https://graph.facebook.com/${this.apiVersion}/${this.phoneNumberId}/messages`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to: recipientPhone,
+          type: 'text',
+          text: {
+            preview_url: true,
+            body: messageText,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        const errJson = await response.json();
+        console.error('[WhatsApp Cloud API Error]:', errJson);
+        return { success: false, error: JSON.stringify(errJson) };
+      }
+
+      const resData = await response.json();
+      return { success: true, messageId: resData.messages?.[0]?.id || messageId };
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : 'Unknown network failure';
+      console.error('[WhatsApp Dispatch Exception]:', errorMsg);
+      return { success: false, error: errorMsg };
+    }
+  }
 
   static async sendBookingConfirmation(
     booking: BookingEntity,
@@ -44,48 +114,28 @@ Our estate concierge is at your service. For custom dining or equestrian experie
 _Warm Regards,_
 *Estate Management, The Kesari Bagh*`;
 
-    // If real token is missing, simulate success for demo/development mode
-    if (!process.env.WHATSAPP_ACCESS_TOKEN || process.env.WHATSAPP_ACCESS_TOKEN === 'demo_token') {
-      console.log(`[WhatsApp Mock Dispatcher] Message dispatched to ${recipientPhone}:`, messageBody);
-      return {
-        success: true,
-        messageId: `mock_wam_${Date.now()}`,
-      };
-    }
+    return this.sendTextMessage(recipientPhone, messageBody);
+  }
 
-    try {
-      const url = `https://graph.facebook.com/${this.apiVersion}/${this.phoneNumberId}/messages`;
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messaging_product: 'whatsapp',
-          recipient_type: 'individual',
-          to: recipientPhone,
-          type: 'text',
-          text: {
-            preview_url: true,
-            body: messageBody,
-          },
-        }),
-      });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        console.error('[WhatsApp Cloud API Error]:', errJson);
-        return { success: false, error: JSON.stringify(errJson) };
-      }
-
-      const resData = await response.json();
-      const messageId = resData.messages?.[0]?.id;
-      return { success: true, messageId };
-    } catch (err: unknown) {
-      const errorMsg = err instanceof Error ? err.message : 'Unknown network failure';
-      console.error('[WhatsApp Dispatch Exception]:', errorMsg);
-      return { success: false, error: errorMsg };
-    }
+  static async dispatchBookingNotification(params: {
+    phone: string;
+    guestName: string;
+    bookingReference: string;
+    roomCategory: string;
+    checkIn: string;
+    checkOut: string;
+    guestsCount: number;
+    amountPaid: number;
+  }): Promise<WhatsAppDispatchResult> {
+    const mockBooking: Partial<BookingEntity> = {
+      guest_phone: params.phone,
+      guest_name: params.guestName,
+      reference_code: params.bookingReference,
+      check_in: params.checkIn,
+      check_out: params.checkOut,
+      guests_count: params.guestsCount,
+      total_price: params.amountPaid,
+    };
+    return this.sendBookingConfirmation(mockBooking as BookingEntity, params.roomCategory);
   }
 }

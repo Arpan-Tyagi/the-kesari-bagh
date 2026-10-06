@@ -3,10 +3,12 @@
 import { z } from 'zod';
 
 export const geminiGenerateArticleSchema = z.object({
-  topic: z.string().min(5, 'Topic must be at least 5 characters long').max(150),
-  tone: z.enum(['editorial_luxury', 'poetic_countryside', 'architectural_heritage', 'epicurean_gastronomy']),
-  targetKeywords: z.array(z.string()).min(1, 'Provide at least one keyword'),
+  type: z.enum(['blog_article', 'room_copy']).default('blog_article'),
+  topic: z.string().min(3, 'Topic must be at least 3 characters long').max(150),
+  tone: z.enum(['editorial_luxury', 'poetic_countryside', 'architectural_heritage', 'epicurean_gastronomy']).default('editorial_luxury'),
+  targetKeywords: z.array(z.string()).default([]),
   additionalNotes: z.string().max(500).optional(),
+  roomId: z.string().optional(),
 });
 
 export type GeminiGenerateArticleInput = z.infer<typeof geminiGenerateArticleSchema>;

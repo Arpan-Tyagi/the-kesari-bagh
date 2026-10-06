@@ -144,27 +144,33 @@ export async function POST(req: NextRequest) {
 function generateFallbackResponse(query: string): string {
   const q = query.toLowerCase();
 
-  if (q.includes('pet') || q.includes('dog') || q.includes('cat')) {
-    return 'The Kesari Bagh maintains a strictly pet-free policy across the 1.25-acre estate to safeguard our equestrian sanctuary and manicured gardens. We appreciate your gracious understanding.';
+  if (q.includes('smok')) {
+    return 'The Bagh maintains a strictly non-smoking policy across all interior suites, verandas, and the French chandelier dining hall. Smoking is permitted exclusively in designated outdoor garden areas.';
   }
-  if (q.includes('check in') || q.includes('check out') || q.includes('time') || q.includes('hours')) {
-    return 'At The Kesari Bagh, check-in commences at 2:00 PM to ensure suites are impeccably prepared, and check-out is observed at 11:00 AM. Early arrivals are welcome to relax in our library or open-air lounge.';
+  if (q.includes('pet') || q.includes('dog') || q.includes('cat') || q.includes('animal')) {
+    return 'To preserve our tranquil countryside sanctuary, The Bagh maintains a strictly pet-free policy across the entire 1.25-acre estate; pets are strictly prohibited without exception to safeguard our equestrian paddocks and manicured gardens.';
+  }
+  if (q.includes('check in') || q.includes('check out') || q.includes('check-in') || q.includes('check-out') || q.includes('timing') || q.includes('hours') || q.includes('time')) {
+    return 'Estate check-in commences at 2:00 PM to ensure suites are impeccably prepared, and check-out is observed by 11:00 AM.';
+  }
+  if (q.includes('horse') || q.includes('elly') || q.includes('black beauty') || q.includes('marwari')) {
+    return 'Elly—Black Beauty is our majestic 6ft 7in pureblood Marwari mare featuring signature inward-curling ears. Guests are welcome to enjoy morning paddock grooming, serene walks, and private equestrian portraiture.';
+  }
+  if (q.includes('paraglid') || q.includes('flight') || q.includes('adventure')) {
+    return 'We arrange motorized Aravalli paragliding adventure flights soaring above the scenic foothills of Manesar with certified aviators, bookable as a curated estate experience.';
+  }
+  if (q.includes('direction') || q.includes('delhi') || q.includes('airport') || q.includes('del') || q.includes('reach') || q.includes('route') || q.includes('nh 8') || q.includes('nh8')) {
+    return 'From New Delhi Airport (DEL), navigate south via NH 8 to Panchgaon-Mohamadpur Road in Village Para, Manesar (approx. 45 km / 1 hour drive). The estate is located directly behind Best Western Resort Country Club.';
   }
   if (q.includes('room') || q.includes('suite') || q.includes('stay') || q.includes('tariffs') || q.includes('price')) {
-    return 'The Kesari Bagh offers exactly four keys for complete seclusion: Luxury Garden Facing Pool View (Ground, ₹15,000), Luxury Aravalli Facing Pool View (First, ₹18,000), Luxury Kitchen Garden Facing (Ground, ₹14,000), and Luxury Lush Green Facing (First, ₹16,000). You may reserve directly via our booking bar.';
+    return 'The Bagh offers exactly four keys: Luxury Garden Facing Pool View (Ground, 30.56 m², ₹15,000), Luxury Aravalli Facing Pool View (First, 32.72 m², ₹18,000), Luxury Kitchen Garden Facing (Ground, 27.59 m², ₹14,000), and Luxury Lush Green Facing (First, 27.59 m², ₹16,000). Tariffs are plus 18% GST.';
   }
-  if (q.includes('horse') || q.includes('elly')) {
-    return 'Elly is our majestic 6ft 7in Marwari bloodline mare with signature inward-curling ears. Guests may enjoy sunrise paddock grooming, serene walks, and private equestrian portraiture during their stay.';
+  if (q.includes('food') || q.includes('dining') || q.includes('dinner') || q.includes('bbq') || q.includes('chandelier')) {
+    return 'Dining experiences include our 12-seater French chandelier dining hall, open-air terrace dining under starlight, a live barbecue pit with chef skewers, and organic farm picnic packages.';
   }
-  if (q.includes('paraglid') || q.includes('adventure')) {
-    return 'We coordinate motorized paragliding sorties soaring over the picturesque Aravalli range in Manesar with certified aviators. This experience can be seamlessly reserved alongside your room suite.';
-  }
-  if (q.includes('food') || q.includes('dining') || q.includes('dinner') || q.includes('bbq')) {
-    return 'Culinary offerings include our 12-seater indoor French crystal chandelier dining hall, open-air countryside barbecue under the stars, and artisanal farm picnics prepared with fresh kitchen garden harvests.';
-  }
-  if (q.includes('location') || q.includes('reach') || q.includes('direction') || q.includes('delhi')) {
-    return 'The Kesari Bagh is nestled on Panchgaon-Mohamadpur Road, NH 8, behind Best Western Resort Country Club, Village Para, Manesar. It is an effortless 45-minute drive from Gurugram Cyber Hub and 60 minutes from Delhi IGI Airport.';
+  if (q.includes('whatsapp') || q.includes('human') || q.includes('speak') || q.includes('manager') || q.includes('call') || q.includes('person')) {
+    return 'I would be delighted to connect you with our Estate Management team directly. You can message our Estate Concierge on WhatsApp here: [Chat with Estate Concierge on WhatsApp](https://wa.me/919810000000?text=Inquiry%20from%20web%20concierge). Mr. Vikram Sharma and our estate hosts are at your disposal.';
   }
 
-  return 'Welcome to The Kesari Bagh. We are an intimate 4-key French-colonial countryside retreat in Manesar. How may I assist you with your suite reservation, culinary preferences, or equestrian experiences with Elly today?';
+  return 'Welcome to The Bagh, Manesar. We are an intimate 4-key French-colonial countryside retreat. How may I assist you with your suite reservation, dining experiences, or equestrian activities with Elly today?';
 }

@@ -81,3 +81,23 @@ html.lenis, html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
+
+/* Luxury Magnetic Hover Physics on Primary Action Buttons */
+.magnetic-btn {
+  transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.28s ease, background-color 0.2s ease;
+}
+.magnetic-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+.magnetic-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Photography Mask Reveals */
+.mask-reveal {
+  clip-path: inset(0 0 0 0 round 1.25rem);
+  transition: clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mask-reveal:hover {
+  clip-path: inset(0 0 0 0 round 0.75rem);
+}

@@ -72,6 +72,8 @@ CREATE TABLE IF NOT EXISTS public.bookings (
     tax_total NUMERIC(10, 2) NOT NULL DEFAULT 0,
     total_price NUMERIC(10, 2) NOT NULL,
     status TEXT NOT NULL DEFAULT 'confirmed' CHECK (status IN ('pending', 'confirmed', 'checked_in', 'completed', 'cancelled')),
+    expires_at TIMESTAMP WITH TIME ZONE,
+    guest_id_type TEXT,
     coupon_id UUID REFERENCES public.coupons(id) ON DELETE SET NULL,
     special_requests TEXT,
     whatsapp_notified BOOLEAN NOT NULL DEFAULT false,

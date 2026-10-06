@@ -3,6 +3,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { WhatsAppBookingEngine } from '@/lib/services/whatsapp-bot';
+import { WhatsAppDispatcher } from '@/lib/services/whatsapp-dispatcher';
 
 export const runtime = 'nodejs';
 
@@ -101,7 +103,24 @@ async function processWebhookPayloadAsync(payload: Record<string, unknown>) {
 
     const fromPhone = message.from;
     const textBody = message.text?.body || '';
+    const messageType = message.type || 'text';
 
     console.log(`[WhatsApp Incoming Message] from=${fromPhone} id=${messageId} body="${textBody}"`);
+
+    // Execute Aarav conversational state machine
+    try {
+      const { reply } = await WhatsAppBookingEngine.handleIncomingMessage({
+        from: fromPhone,
+        text: textBody,
+        messageType,
+      });
+
+      // Dispatch reply through WhatsApp Cloud API / Mock
+      if (reply) {
+        await WhatsAppDispatcher.sendTextMessage(fromPhone, reply);
+      }
+    } catch (engineError) {
+      console.error('[WhatsApp Booking Engine Processing Error]:', engineError);
+    }
   }
 }

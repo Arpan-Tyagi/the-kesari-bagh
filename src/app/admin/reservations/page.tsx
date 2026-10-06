@@ -1,7 +1,7 @@
 'use client';
 
 // Searchable and Filterable Reservation Control Center powered by TanStack Table
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -16,6 +16,7 @@ import { updateBookingStatusAction } from '@/actions/admin-actions';
 import { Search, ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
 import { BookingEntity, BookingStatus } from '@/types/database';
 import { getReservationColumns } from './columns';
+import { createClient } from '@/lib/supabase/client';
 
 export default function ReservationsAdminPage() {
   "use no memo";
@@ -23,6 +24,36 @@ export default function ReservationsAdminPage() {
   const [globalFilter, setGlobalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | BookingStatus>('all');
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  useEffect(() => {
+    // Realtime synchronization: Listen to EstateService events
+    const unsubscribe = EstateService.subscribe(() => {
+      setBookings([...EstateService.getBookings()]);
+    });
+
+    // Supabase Realtime channel subscription
+    let channel: ReturnType<ReturnType<typeof createClient>['channel']> | null = null;
+    try {
+      const supabase = createClient();
+      channel = supabase
+        .channel('admin-reservations-realtime')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'bookings' },
+          () => {
+            setBookings([...EstateService.getBookings()]);
+          }
+        )
+        .subscribe();
+    } catch {
+      // Demo fallback
+    }
+
+    return () => {
+      unsubscribe();
+      if (channel) channel.unsubscribe();
+    };
+  }, []);
 
   const handleUpdateStatus = async (id: string, status: BookingStatus) => {
     await updateBookingStatusAction(id, status);
@@ -80,7 +111,7 @@ export default function ReservationsAdminPage() {
 
       {/* Status Filter Tabs */}
       <div className="flex flex-wrap gap-2">
-        {(['all', 'confirmed', 'checked_in', 'cancelled'] as const).map((filter) => (
+        {(['all', 'pending', 'confirmed', 'checked_in', 'cancelled'] as const).map((filter) => (
           <button
             key={filter}
             onClick={() => setStatusFilter(filter)}

@@ -15,7 +15,7 @@ export const bookingFormSchema = z
       .number()
       .int()
       .min(1, 'At least 1 guest is required')
-      .max(4, 'Maximum 4 guests permitted per suite'),
+      .max(16, 'Maximum 16 guests permitted for whole estate buyout'),
     addonIds: z.array(z.string()).default([]),
     couponCode: z.string().optional(),
     guestName: z
@@ -42,6 +42,18 @@ export const bookingFormSchema = z
     {
       message: 'Check-out date must occur after check-in date',
       path: ['checkOut'],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.roomId !== 'whole-estate' && data.guestsCount > 3) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Maximum 3 guests permitted per individual suite (max 3 per room enforcement)',
+      path: ['guestsCount'],
     }
   );
 

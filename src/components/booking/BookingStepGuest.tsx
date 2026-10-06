@@ -9,6 +9,7 @@ interface BookingStepGuestProps {
   guestName: string;
   guestEmail: string;
   guestPhone: string;
+  idType?: string;
   specialRequests: string;
   couponCode: string;
   subtotal: number;
@@ -16,6 +17,7 @@ interface BookingStepGuestProps {
     guestName?: string;
     guestEmail?: string;
     guestPhone?: string;
+    idType?: string;
     specialRequests?: string;
     couponCode?: string;
   }) => void;
@@ -29,6 +31,7 @@ export function BookingStepGuest({
   guestName,
   guestEmail,
   guestPhone,
+  idType = 'Passport',
   specialRequests,
   couponCode,
   subtotal,
@@ -88,10 +91,10 @@ export function BookingStepGuest({
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="space-y-1.5">
             <label className="text-[11px] font-mono uppercase tracking-wider text-[#5F635F]">
-              Email Address (For Booking Vouchers) *
+              Email Address *
             </label>
             <input
               type="email"
@@ -105,7 +108,7 @@ export function BookingStepGuest({
 
           <div className="space-y-1.5">
             <label className="text-[11px] font-mono uppercase tracking-wider text-[#5F635F]">
-              WhatsApp Phone Number *
+              WhatsApp Phone *
             </label>
             <input
               type="tel"
@@ -115,6 +118,22 @@ export function BookingStepGuest({
               placeholder="+91 98111 22334"
               className="w-full rounded-xl border border-[#E0CDB7] bg-white px-3.5 py-2.5 text-sm outline-hidden focus:border-[#C5A880]"
             />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-mono uppercase tracking-wider text-[#5F635F]">
+              Government ID Type
+            </label>
+            <select
+              value={idType}
+              onChange={(e) => onUpdate({ idType: e.target.value })}
+              className="w-full rounded-xl border border-[#E0CDB7] bg-white px-3.5 py-2.5 text-sm outline-hidden focus:border-[#C5A880]"
+            >
+              <option value="Passport">Passport</option>
+              <option value="Aadhaar Card">Aadhaar Card</option>
+              <option value="Driver's License">Driver&apos;s License</option>
+              <option value="Voter ID">Voter ID</option>
+            </select>
           </div>
         </div>
 
@@ -189,7 +208,7 @@ export function BookingStepGuest({
           onClick={onSubmit}
           className="rounded-full bg-[#142019] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#FBF9F5] hover:bg-[#23342A] disabled:opacity-40 shadow-lg"
         >
-          {isSubmitting ? 'Confirming Stay...' : 'Confirm Reservation ⚜️'}
+          {isSubmitting ? 'Preparing Hold...' : 'Proceed to Checkout & Hold →'}
         </button>
       </div>
     </div>
