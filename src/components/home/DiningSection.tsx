@@ -10,7 +10,7 @@ const DINING_EXPERIENCES = [
     subtitle: '12-Seater Private Indoor Feast',
     description:
       'Dine under an authentic Parisian crystal chandelier in our private salon. Bespoke 4-course table d’hôte curated by the estate chef featuring royal Awadhi and continental countryside delicacies.',
-    image: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/dining-french-chandelier.jpg',
     icon: Sparkles,
   },
   {
@@ -18,7 +18,7 @@ const DINING_EXPERIENCES = [
     subtitle: 'Evening Firepit & Skewers',
     description:
       'Gourmet live barbecue under the twilight stars of Manesar. Tender skewers, fresh local produce, grilled paneer, and farm-fresh marinade accompanied by estate-crafted herb bread.',
-    image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/dining-live-barbecue.jpg',
     icon: Flame,
   },
   {
@@ -26,7 +26,7 @@ const DINING_EXPERIENCES = [
     subtitle: 'Lawn Canopy & Starlight Suppers',
     description:
       'Set across our 1-acre manicured lawns with lanterns, low tables, and ambient candle warmth. An idyllic open-air evening facing the tranquil silhouette of the Aravalli hills.',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/dining-openair-courtyard.jpg',
     icon: SunMedium,
   },
   {
@@ -34,7 +34,7 @@ const DINING_EXPERIENCES = [
     subtitle: 'Hand-Picked Farm Luncheons',
     description:
       'Wicker basket luncheons arranged amidst our organic kitchen flora and ancient neem trees. Artisanal cheese boards, fresh sourdough, cold-pressed estate juices, and seasonal bakes.',
-    image: 'https://images.unsplash.com/photo-1533777857889-4be7c70e33f7?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/dining-farm-picnic.jpg',
     icon: Utensils,
   },
 ];

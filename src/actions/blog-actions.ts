@@ -25,7 +25,7 @@ Each suite is an intentional study in restraint:
 - Private stone terraces overlooking our manicured lawns and the Aravalli horizon
 
 Whether dining under the 12-seater crystal chandelier or watching the twilight descend over the pool, here time slows to an exquisite cadence.`,
-    cover_image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80',
+    cover_image: '/images/hero-estate-facade.jpg',
     author_name: 'The Estate Concierge',
     published: true,
     published_at: new Date().toISOString(),
@@ -41,7 +41,7 @@ Whether dining under the 12-seater crystal chandelier or watching the twilight d
 At The Kesari Bagh, mornings are punctuated by the rhythmic hoofbeats of **Elly**, our magnificent 6ft 7in black Marwari mare. 
 
 Distinguished by the lyrical inward-curving lyre-shaped ears that define pure Marwari lineage, Elly represents centuries of royal equestrian heritage. Guests are invited to participate in sunrise grooming sessions, serene paddock walks, and equestrian portraiture against the backdrop of ancient neem trees.`,
-    cover_image: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=1600&q=80',
+    cover_image: '/images/experience-elly-horse.jpg',
     author_name: 'The Equestrian Master',
     published: true,
     published_at: new Date().toISOString(),

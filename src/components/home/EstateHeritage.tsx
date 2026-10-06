@@ -56,7 +56,7 @@ export function EstateHeritage() {
             <div className="double-bezel shadow-2xl">
               <div className="double-bezel-inner relative h-96 sm:h-[460px] w-full overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80"
+                  src="/images/estate-heritage-grounds.jpg"
                   alt="The Kesari Bagh French-Colonial Countryside Architecture"
                   fill
                   className="object-cover"

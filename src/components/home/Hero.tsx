@@ -14,8 +14,7 @@ export function Hero() {
         <div
           className="absolute inset-0 bg-cover bg-center opacity-45 scale-105 transition-transform duration-1000 ease-out"
           style={{
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=2400&q=85)',
+            backgroundImage: 'url(/images/hero-estate-facade.jpg)',
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#142019] via-[#142019]/40 to-black/60" />

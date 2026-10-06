@@ -211,7 +211,7 @@ INSERT INTO public.rooms (
     'Private Garden & Azure Pool',
     15000.00,
     18000.00,
-    '["https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1600&q=80", "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1600&q=80"]'::jsonb
+    '["/images/room-garden-pool.jpg", "/images/estate-heritage-grounds.jpg"]'::jsonb
 ),
 (
     'aravalli-facing-pool-view',
@@ -226,7 +226,7 @@ INSERT INTO public.rooms (
     'Aravalli Mountain Range & Pool',
     18000.00,
     22000.00,
-    '["https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1600&q=80", "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=1600&q=80"]'::jsonb
+    '["/images/room-aravalli-terrace.jpg", "/images/hero-estate-facade.jpg"]'::jsonb
 ),
 (
     'kitchen-garden-facing-view',
@@ -241,7 +241,7 @@ INSERT INTO public.rooms (
     'Organic Kitchen Garden & Flora',
     14000.00,
     17000.00,
-    '["https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1600&q=80", "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1600&q=80"]'::jsonb
+    '["/images/room-kitchen-garden.jpg", "/images/dining-farm-picnic.jpg"]'::jsonb
 ),
 (
     'lush-green-facing-view',
@@ -256,7 +256,7 @@ INSERT INTO public.rooms (
     'Panoramic Estate Canopies & Greenery',
     16000.00,
     19500.00,
-    '["https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1600&q=80", "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1600&q=80"]'::jsonb
+    '["/images/room-lush-green.jpg", "/images/estate-heritage-grounds.jpg"]'::jsonb
 )
 ON CONFLICT (slug) DO NOTHING;
 
@@ -290,7 +290,7 @@ Each suite is an intentional study in restraint:
 - Private stone terraces overlooking our manicured lawns and the Aravalli horizon
 
 Whether dining under the 12-seater crystal chandelier or watching the twilight descend over the pool, here time slows to an exquisite cadence.',
-    'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80',
+    '/images/hero-estate-facade.jpg',
     'The Estate Concierge',
     true
 ),
@@ -303,7 +303,7 @@ Whether dining under the 12-seater crystal chandelier or watching the twilight d
 At The Kesari Bagh, mornings are punctuated by the rhythmic hoofbeats of **Elly**, our magnificent 6ft 7in black Marwari mare. 
 
 Distinguished by the lyrical inward-curving lyre-shaped ears that define pure Marwari lineage, Elly represents centuries of royal equestrian heritage. Guests are invited to participate in sunrise grooming sessions, serene paddock walks, and equestrian portraiture against the backdrop of ancient neem trees.',
-    'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=1600&q=80',
+    '/images/experience-elly-horse.jpg',
     'The Equestrian Master',
     true
 )

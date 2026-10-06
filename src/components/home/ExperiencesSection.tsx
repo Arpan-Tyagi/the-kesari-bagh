@@ -29,7 +29,7 @@ export function ExperiencesSection() {
             <div className="double-bezel-inner h-full flex flex-col justify-between overflow-hidden bg-white">
               <div className="relative h-80 sm:h-96 w-full overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=1600&q=80"
+                  src="/images/experience-elly-horse.jpg"
                   alt="Elly - Black Beauty Marwari Horse"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -64,7 +64,7 @@ export function ExperiencesSection() {
             <div className="double-bezel-inner h-full flex flex-col justify-between overflow-hidden bg-white">
               <div className="relative h-64 sm:h-72 w-full overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=1200&q=80"
+                  src="/images/experience-paragliding.jpg"
                   alt="Motorized Aravalli Paragliding"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"

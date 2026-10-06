@@ -79,7 +79,7 @@ Format your output EXACTLY as valid JSON with three keys:
       slug,
       excerpt,
       content: markdownContent,
-      coverImage: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80',
+      coverImage: '/images/hero-estate-facade.jpg',
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Content studio generation failed';
