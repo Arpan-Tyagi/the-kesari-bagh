@@ -44,6 +44,18 @@ export const metadata: Metadata = {
     siteName: 'The Kesari Bagh',
     locale: 'en_IN',
     type: 'website',
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'The Kesari Bagh French-Colonial Countryside Estate in Manesar',
+      },
+    ],
+  },
+  icons: {
+    icon: '/icon.png',
+    apple: '/apple-icon.png',
   },
 };
 

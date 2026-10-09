@@ -62,8 +62,8 @@ export const FIRST_FLOOR_SPECS: Record<string, RoomDetailSpec> = {
     },
     galleryImages: [
       { src: '/images/room-aravalli-terrace.jpg', alt: 'Aravalli Suite & Terrace', caption: 'Master suite interior overlooking the private mountain terrace' },
-      { src: '/images/hero-estate-facade.jpg', alt: 'Estate Facade & Upper Balconies', caption: 'First-floor elevation showing the private balcony overhang' },
-      { src: '/images/experience-paragliding.jpg', alt: 'Aravalli Skyline', caption: 'The rolling Aravalli ridge views unfolding across the horizon' },
+      { src: '/images/room-aravalli-terrace-view.jpg', alt: 'Private Stone Balcony & Sunset Vistas', caption: 'Balcony bistro seating framing the pool and sunset over the Aravalli range' },
+      { src: '/images/room-aravalli-bathroom.jpg', alt: 'Green Marble En-Suite Sanctuary', caption: 'Bespoke marble rain shower sanctuary with handcrafted brass fittings' },
     ],
   },
 
@@ -127,8 +127,8 @@ export const FIRST_FLOOR_SPECS: Record<string, RoomDetailSpec> = {
     },
     galleryImages: [
       { src: '/images/room-lush-green.jpg', alt: 'Lush Green Suite Interior', caption: 'Elevated bedroom suite framing verdant treetop canopies' },
+      { src: '/images/room-lush-green-loggia.jpg', alt: 'Upper Shaded Loggia Overlook', caption: 'Woven cane armchairs overlooking the 1-acre central emerald lawn' },
       { src: '/images/estate-heritage-grounds.jpg', alt: '1-Acre Central Lawn', caption: 'The expansive emerald grounds visible from your upper loggia' },
-      { src: '/images/hero-estate-facade.jpg', alt: 'Estate Architecture', caption: 'The French-colonial architecture in afternoon light' },
     ],
   },
 };

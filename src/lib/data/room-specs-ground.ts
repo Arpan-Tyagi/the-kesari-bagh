@@ -62,7 +62,7 @@ export const GROUND_FLOOR_SPECS: Record<string, RoomDetailSpec> = {
     },
     galleryImages: [
       { src: '/images/room-garden-pool.jpg', alt: 'Suite Bedroom & Pool View', caption: 'Interior view looking towards the private poolside lawn' },
-      { src: '/images/estate-heritage-grounds.jpg', alt: 'Manicured Estate Grounds', caption: 'The 1-acre manicured central lawn steps from your veranda' },
+      { src: '/images/room-garden-pool-bathroom.jpg', alt: 'Italian Marble En-Suite Bath', caption: 'Handcrafted stone basin and brushed brass rain shower' },
       { src: '/images/dining-openair-courtyard.jpg', alt: 'Open-Air Verandah', caption: 'Evening courtyard ambience adjacent to the pool pavilion' },
     ],
   },
@@ -127,8 +127,8 @@ export const GROUND_FLOOR_SPECS: Record<string, RoomDetailSpec> = {
     },
     galleryImages: [
       { src: '/images/room-kitchen-garden.jpg', alt: 'Kitchen Garden Suite', caption: 'Restful bedroom sanctuary with sash windows framing organic gardens' },
+      { src: '/images/room-kitchen-garden-verandah.jpg', alt: 'Botanical Garden Verandah', caption: 'Private terracotta verandah overlooking fragrance herbs and citrus trees' },
       { src: '/images/dining-farm-picnic.jpg', alt: 'Estate Garden Grounds', caption: 'The vibrant organic kitchen garden surrounding the suite perimeter' },
-      { src: '/images/estate-heritage-grounds.jpg', alt: 'Estate Flora & Lawns', caption: 'Manicured greenery leading towards the estate pavilion' },
     ],
   },
 };
