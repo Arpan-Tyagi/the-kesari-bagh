@@ -81,9 +81,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#suites" className="hover:text-[#C5A880] transition-colors">
+                <Link href="/rooms" className="hover:text-[#C5A880] transition-colors">
                   The Four Suites
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#dining" className="hover:text-[#C5A880] transition-colors">

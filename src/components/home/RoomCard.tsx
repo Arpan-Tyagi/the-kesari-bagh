@@ -15,7 +15,7 @@ export function RoomCard({ room }: RoomCardProps) {
     <div className="double-bezel group transition-all duration-300 hover:shadow-xl">
       <div className="double-bezel-inner flex flex-col h-full overflow-hidden bg-white">
         {/* Room Photography with Reveal Overlay */}
-        <div className="relative h-64 sm:h-72 w-full overflow-hidden">
+        <Link href={`/rooms/${room.slug}`} className="relative h-64 sm:h-72 w-full overflow-hidden block">
           <Image
             src={room.images[0]}
             alt={room.name}
@@ -40,7 +40,7 @@ export function RoomCard({ room }: RoomCardProps) {
               <span className="text-xs font-sans text-[#C5A880]">/ night</span>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Content Details */}
         <div className="p-6 flex flex-col flex-1 justify-between space-y-4">
@@ -51,7 +51,9 @@ export function RoomCard({ room }: RoomCardProps) {
             </div>
 
             <h3 className="font-serif text-xl sm:text-2xl text-[#142019] group-hover:text-[#9E7F55] transition-colors leading-snug">
-              {room.name}
+              <Link href={`/rooms/${room.slug}`}>
+                {room.name}
+              </Link>
             </h3>
 
             <p className="text-xs sm:text-sm text-[#5F635F] line-clamp-2 leading-relaxed">
@@ -73,16 +75,22 @@ export function RoomCard({ room }: RoomCardProps) {
             </div>
           </div>
 
-          {/* Action Trigger */}
-          <div className="pt-2">
+          {/* Action Triggers: View Suite & Direct Reserve */}
+          <div className="pt-2 grid grid-cols-2 gap-2">
+            <Link
+              href={`/rooms/${room.slug}`}
+              className="flex items-center justify-center gap-1.5 rounded-full border border-[#142019]/20 bg-white px-3 py-2.5 text-xs font-mono uppercase tracking-wider text-[#142019] hover:bg-[#F0EBE1] transition-colors"
+            >
+              <span>Explore</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+
             <Link
               href={`/book?roomId=${room.id}`}
-              className="w-full flex items-center justify-between rounded-full bg-[#142019] px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-[#FBF9F5] transition-all group-hover:bg-[#C5A880] group-hover:text-[#142019]"
+              className="flex items-center justify-center gap-1.5 rounded-full bg-[#142019] px-3 py-2.5 text-xs font-mono uppercase tracking-wider text-[#FBF9F5] transition-all hover:bg-[#C5A880] hover:text-[#142019]"
             >
-              <span>Reserve This Suite</span>
-              <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#142019]/10">
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </div>
+              <span>Reserve</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>

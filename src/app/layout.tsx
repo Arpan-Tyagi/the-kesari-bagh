@@ -25,6 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://thekesaribagh.com'),
   title: 'The Kesari Bagh | French-Colonial Countryside Estate in Manesar',
   description:
     'An exclusive 4-key French-colonial countryside estate in the Aravalli foothills of Manesar, Gurugram. Ultra-luxury suites, equestrian experiences with Elly, French chandelier dining, and unhurried seclusion.',

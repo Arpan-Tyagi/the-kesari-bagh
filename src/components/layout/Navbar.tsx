@@ -18,11 +18,11 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { label: 'The Estate', href: '#estate' },
-    { label: 'Suites & Keys', href: '#suites' },
-    { label: 'Dining', href: '#dining' },
-    { label: 'Experiences', href: '#experiences' },
-    { label: 'Private Events', href: '#events' },
+    { label: 'The Estate', href: '/#estate' },
+    { label: 'Suites & Keys', href: '/rooms' },
+    { label: 'Dining', href: '/#dining' },
+    { label: 'Experiences', href: '/#experiences' },
+    { label: 'Private Events', href: '/#events' },
     { label: 'Admin', href: '/admin' },
   ];
 
